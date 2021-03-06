@@ -29,6 +29,23 @@ class MainActivity : AppCompatActivity() {
         setupObservers()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.refresh -> {
+                jokesAdapter.submitList(null)
+                viewModel.getJokes()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun setupAppbar() {
         with(binding) {
             setSupportActionBar(toolbar)
@@ -74,20 +91,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
-            R.id.refresh -> {
-                jokesAdapter.submitList(null)
-                viewModel.getJokes()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 }
