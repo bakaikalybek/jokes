@@ -24,8 +24,6 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        viewModel.getJokes()
-
         setupAppbar()
         setupViews()
         setupObservers()
@@ -50,12 +48,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupObservers() {
         with(viewModel) {
-            jokes.observe(this@MainActivity, Observer {
+            getJokes()
+
+            jokes.observe(this@MainActivity, {
                 jokesAdapter.submitList(it)
                 binding.recycler.isVisible = true
             })
 
-            loading.observe(this@MainActivity, Observer {
+            loading.observe(this@MainActivity, {
                 when(it) {
                     true -> {
                         binding.recycler.isVisible = false
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
-            error.observe(this@MainActivity, Observer {
+            error.observe(this@MainActivity, {
                 binding.error.text = it
                 binding.recycler.isVisible = false
                 binding.error.isVisible = true
